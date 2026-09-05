@@ -1,0 +1,90 @@
+name: Data Pack Submission
+description: Submit a community Data Pack for Football Club Manager
+title: "[DATA PACK] "
+labels:
+  - data-pack-submission
+
+body:
+  - type: input
+    id: pack_name
+    attributes:
+      label: Data Pack Name
+      placeholder: Example: 2026/27 Player Names Pack
+    validations:
+      required: true
+
+  - type: input
+    id: author
+    attributes:
+      label: Author
+      placeholder: Your name or username
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: 1.0.0
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      placeholder: Describe what this Data Pack changes.
+    validations:
+      required: true
+
+  - type: input
+    id: download_url
+    attributes:
+      label: Download URL
+      description: Direct link to the ZIP file.
+      placeholder: https://github.com/...
+    validations:
+      required: true
+
+  - type: input
+    id: source_url
+    attributes:
+      label: Source Page
+      description: GitHub repository, release page or website where users can inspect the pack.
+      placeholder: https://github.com/...
+    validations:
+      required: true
+
+  - type: input
+    id: game_version
+    attributes:
+      label: Game Version
+      placeholder: 1.0
+    validations:
+      required: true
+
+  - type: input
+    id: database_version
+    attributes:
+      label: Database Version
+      placeholder: 1.0
+    validations:
+      required: true
+
+  - type: input
+    id: sha256
+    attributes:
+      label: SHA-256
+      placeholder: SHA-256 hash of the ZIP file
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: I confirm that this Data Pack does not contain executable code.
+          required: true
+        - label: I understand that the pack may be removed if it violates the rules.
+          required: true
