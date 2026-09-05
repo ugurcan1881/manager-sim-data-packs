@@ -25,7 +25,7 @@ body:
     id: version
     attributes:
       label: "Version"
-      placeholder: "1.0.0"
+      placeholder: "Example: 1.0.0"
     validations:
       required: true
 
@@ -33,7 +33,8 @@ body:
     id: description
     attributes:
       label: "Description"
-      placeholder: "Describe what this Data Pack changes."
+      description: "Describe what your Data Pack changes."
+      placeholder: "Example: Updates player names for the 2026/27 season."
     validations:
       required: true
 
@@ -41,8 +42,8 @@ body:
     id: download_url
     attributes:
       label: "Download URL"
-      description: "Direct link to the ZIP file."
-      placeholder: "https://github.com/..."
+      description: "Direct link to the Data Pack ZIP file."
+      placeholder: "https://github.com/username/repository/releases/download/v1.0/pack.zip"
     validations:
       required: true
 
@@ -50,8 +51,8 @@ body:
     id: source_url
     attributes:
       label: "Source Page"
-      description: "GitHub repository, release page or website where users can inspect the pack."
-      placeholder: "https://github.com/..."
+      description: "A page where users can inspect the Data Pack and its author."
+      placeholder: "https://github.com/username/repository"
     validations:
       required: true
 
@@ -59,7 +60,7 @@ body:
     id: game_version
     attributes:
       label: "Game Version"
-      placeholder: "1.0"
+      placeholder: "Example: 1.0"
     validations:
       required: true
 
@@ -67,7 +68,7 @@ body:
     id: database_version
     attributes:
       label: "Database Version"
-      placeholder: "1.0"
+      placeholder: "Example: 1.0"
     validations:
       required: true
 
@@ -75,27 +76,24 @@ body:
     id: sha256
     attributes:
       label: "SHA-256"
-      placeholder: "SHA-256 hash of the ZIP file"
+      description: "SHA-256 hash of the ZIP file."
+      placeholder: "Example: e3b0c44298fc1c149afbf4c8996fb924..."
     validations:
       required: true
 
-    - type: checkboxes
-    id: confirmation
+  - type: checkboxes
+    id: submission_confirmation
     attributes:
       label: "Submission Confirmation"
-      description: "Please confirm the following before submitting your Data Pack."
+      description: "Please confirm all of the following before submitting."
       options:
         - label: "I confirm that I am responsible for the content included in this Data Pack."
           required: true
-
         - label: "I confirm that I have the necessary rights or permissions to distribute the content included in this Data Pack."
           required: true
-
         - label: "I confirm that this Data Pack does not contain executable code, malware or intentionally harmful files."
           required: true
-
         - label: "I understand that this Data Pack may be removed if it violates community rules or receives a valid copyright or trademark complaint."
           required: true
-
         - label: "I understand that submitting this Data Pack does not guarantee that it will be listed or featured."
           required: true
