@@ -79,12 +79,23 @@ body:
     validations:
       required: true
 
-  - type: checkboxes
+    - type: checkboxes
     id: confirmation
     attributes:
-      label: "Confirmation"
+      label: "Submission Confirmation"
+      description: "Please confirm the following before submitting your Data Pack."
       options:
-        - label: "I confirm that this Data Pack does not contain executable code."
+        - label: "I confirm that I am responsible for the content included in this Data Pack."
           required: true
-        - label: "I understand that the pack may be removed if it violates the rules."
+
+        - label: "I confirm that I have the necessary rights or permissions to distribute the content included in this Data Pack."
+          required: true
+
+        - label: "I confirm that this Data Pack does not contain executable code, malware or intentionally harmful files."
+          required: true
+
+        - label: "I understand that this Data Pack may be removed if it violates community rules or receives a valid copyright or trademark complaint."
+          required: true
+
+        - label: "I understand that submitting this Data Pack does not guarantee that it will be listed or featured."
           required: true
