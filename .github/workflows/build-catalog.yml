@@ -1,0 +1,77 @@
+name: Build Data Pack Catalog
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "packs/**"
+      - "featured.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build catalog.json
+        run: |
+          python3 - <<'PY'
+          import json
+          import glob
+          from pathlib import Path
+
+          featured_path = Path("featured.json")
+
+          featured_ids = set()
+
+          if featured_path.exists():
+              with featured_path.open("r", encoding="utf-8") as f:
+                  featured_data = json.load(f)
+
+              featured_ids = set(featured_data.get("packs", []))
+
+          packs = []
+
+          for file_path in sorted(glob.glob("packs/*.json")):
+              with open(file_path, "r", encoding="utf-8") as f:
+                  pack = json.load(f)
+
+              pack["featured"] = pack.get("id") in featured_ids
+              packs.append(pack)
+
+          catalog = {
+              "packs": packs
+          }
+
+          with open("catalog.json", "w", encoding="utf-8") as f:
+              json.dump(
+                  catalog,
+                  f,
+                  ensure_ascii=False,
+                  indent=2
+              )
+
+          print(f"Catalog generated with {len(packs)} Data Pack(s).")
+          PY
+
+      - name: Commit catalog.json
+        run: |
+          git config user.name "Football Club Manager Bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add catalog.json
+
+          if git diff --cached --quiet; then
+            echo "Catalog is already up to date."
+            exit 0
+          fi
+
+          git commit -m "Update Data Pack catalog"
+          git push
