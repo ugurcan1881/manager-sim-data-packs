@@ -1,0 +1,13 @@
+{
+  "id": "test-pack",
+  "name": "Test Data Pack",
+  "author": "Manager Sim Community",
+  "version": "1.0.0",
+  "description": "Test data pack for the community mod system.",
+  "downloadUrl": "",
+  "sourceUrl": "",
+  "sizeBytes": 0,
+  "sha256": "",
+  "gameVersion": "1.0",
+  "databaseVersion": "1.0"
+}
