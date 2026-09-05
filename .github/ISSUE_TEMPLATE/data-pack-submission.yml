@@ -1,6 +1,7 @@
 name: "Submit Data Pack"
 description: "Share your Football Club Manager Data Pack"
 title: "[DATA PACK] "
+labels: []
 
 body:
   - type: input
@@ -39,17 +40,15 @@ body:
     validations:
       required: true
 
-    - type: checkboxes
+  - type: checkboxes
     id: confirmation
     attributes:
       label: "Confirmation"
-      description: "Please confirm the following."
+      description: "Please confirm all of the following."
       options:
         - label: "I am responsible for the content included in this Data Pack."
           required: true
-
         - label: "I confirm that I have the necessary rights or permissions to distribute the content included in this Data Pack."
           required: true
-
-        - label: "I understand that this Data Pack may be removed if it violates the rules or receives a valid rights complaint."
+        - label: "I understand that this Data Pack may be removed if it violates the rules or receives a valid copyright, trademark or other rights complaint."
           required: true
