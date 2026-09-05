@@ -109,6 +109,17 @@ def is_safe_token(value: object) -> bool:
     )
 
 
+def is_valid_author_display_name(value: object) -> bool:
+    if not isinstance(value, str) or not value.strip() or len(value) > 50:
+        return False
+    return all(
+        unicodedata.category(character).startswith("L")
+        or unicodedata.category(character) == "Nd"
+        or character in " -_."
+        for character in value
+    )
+
+
 def api_request(url: str, token: str, *, method: str = "GET", payload: dict | None = None) -> object:
     headers = {
         "Accept": "application/vnd.github+json",
@@ -149,7 +160,7 @@ def parse_issue_form(body: str) -> dict[str, str]:
     result = {target: sections[label].strip() for label, target in FORM_FIELDS.items()}
     if (
         not is_safe_display_text(result["name"], 120)
-        or not is_safe_display_text(result["author"], 120)
+        or not is_valid_author_display_name(result["author"])
         or not is_optional_display_text(result["description"], 4000)
     ):
         raise SubmissionError("One or more submission fields contain invalid text or exceed the allowed length.")
