@@ -7,10 +7,15 @@ on:
     paths:
       - "packs/**"
       - "featured.json"
+      - ".github/scripts/build_catalog.py"
   workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: data-pack-catalog-${{ github.repository }}
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -21,45 +26,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build catalog.json
-        run: |
-          python3 - <<'PY'
-          import json
-          import glob
-          from pathlib import Path
-
-          featured_path = Path("featured.json")
-
-          featured_ids = set()
-
-          if featured_path.exists():
-              with featured_path.open("r", encoding="utf-8") as f:
-                  featured_data = json.load(f)
-
-              featured_ids = set(featured_data.get("packs", []))
-
-          packs = []
-
-          for file_path in sorted(glob.glob("packs/*.json")):
-              with open(file_path, "r", encoding="utf-8") as f:
-                  pack = json.load(f)
-
-              pack["featured"] = pack.get("id") in featured_ids
-              packs.append(pack)
-
-          catalog = {
-              "packs": packs
-          }
-
-          with open("catalog.json", "w", encoding="utf-8") as f:
-              json.dump(
-                  catalog,
-                  f,
-                  ensure_ascii=False,
-                  indent=2
-              )
-
-          print(f"Catalog generated with {len(packs)} Data Pack(s).")
-          PY
+        run: python3 .github/scripts/build_catalog.py
 
       - name: Commit catalog.json
         run: |

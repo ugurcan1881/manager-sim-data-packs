@@ -1,0 +1,53 @@
+name: Process Data Pack Submission
+
+on:
+  issues:
+    types:
+      - opened
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: data-pack-catalog-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  validate-and-publish:
+    if: startsWith(github.event.issue.title, '[DATA PACK]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run validator tests
+        run: python3 -m unittest discover -s .github/scripts/tests -p "test_*.py"
+
+      - name: Validate submission and create pack metadata
+        id: submission
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SUBMISSION_RESULT_PATH: .submission-result.json
+        run: python3 .github/scripts/process_submission.py
+
+      - name: Build catalog.json
+        run: python3 .github/scripts/build_catalog.py
+
+      - name: Commit validated Data Pack
+        run: |
+          git config user.name "Football Club Manager Bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add packs catalog.json
+          git commit -m "Add validated community Data Pack"
+          git push
+
+      - name: Comment on and close submission issue
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SUBMISSION_RESULT_PATH: .submission-result.json
+        run: python3 .github/scripts/process_submission.py --finalize
