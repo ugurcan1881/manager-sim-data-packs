@@ -1,0 +1,15 @@
+{
+  "id": "2026-27-data-pack",
+  "name": "2026/27 Data Pack",
+  "author": "khan",
+  "version": "1.0.0",
+  "description": "2026 2027 data for Football Club Manager.",
+  "downloadUrl": "https://github.com/khan1881/football-club-manager-data-pack/releases/download/v1.0.0/ManagerSim-Pro-Real-Names-v1.1.0.zip",
+  "sourceUrl": "https://github.com/khan1881/football-club-manager-data-pack/releases/tag/v1.0.0",
+  "sizeBytes": 79148385,
+  "sha256": "3620af4d00ff3c62ad1bc651630c06930ef0ddfcb84c4c9a3e9f0c5a5a75c68d",
+  "gameVersion": "1.0.0",
+  "minimumGameVersion": "1.0.0",
+  "databaseVersion": "2",
+  "downloadCount": 0
+}
