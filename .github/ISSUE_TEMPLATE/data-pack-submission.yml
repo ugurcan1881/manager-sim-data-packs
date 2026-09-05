@@ -39,7 +39,7 @@ body:
     validations:
       required: true
 
-  - type: checkboxes
+    - type: checkboxes
     id: confirmation
     attributes:
       label: "Confirmation"
@@ -47,5 +47,9 @@ body:
       options:
         - label: "I am responsible for the content included in this Data Pack."
           required: true
+
+        - label: "I confirm that I have the necessary rights or permissions to distribute the content included in this Data Pack."
+          required: true
+
         - label: "I understand that this Data Pack may be removed if it violates the rules or receives a valid rights complaint."
           required: true
