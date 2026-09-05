@@ -1,14 +1,13 @@
-name: "Data Pack Submission"
-description: "Submit a community Data Pack for Football Club Manager"
+name: "Submit Data Pack"
+description: "Share your Football Club Manager Data Pack"
 title: "[DATA PACK] "
-labels:
-  - "data-pack-submission"
 
 body:
   - type: input
     id: pack_name
     attributes:
-      label: "Data Pack Name"
+      label: "Mod Name"
+      description: "Enter the name of your Data Pack."
       placeholder: "Example: 2026/27 Real Data Pack"
     validations:
       required: true
@@ -17,15 +16,8 @@ body:
     id: author
     attributes:
       label: "Author"
-      placeholder: "Your name or username"
-    validations:
-      required: true
-
-  - type: input
-    id: version
-    attributes:
-      label: "Version"
-      placeholder: "Example: 1.0.0"
+      description: "Enter your name or username."
+      placeholder: "Example: FootballFan"
     validations:
       required: true
 
@@ -33,49 +25,27 @@ body:
     id: description
     attributes:
       label: "Description"
-      description: "Briefly describe what your Data Pack changes."
-      placeholder: "Example: Updates player names, club names, competition names and logos."
+      description: "Briefly explain what your Data Pack changes."
+      placeholder: "Example: Updates player names, club names, competitions, stadiums and logos."
     validations:
       required: true
 
   - type: input
     id: source_url
     attributes:
-      label: "Data Pack Release / Source URL"
-      description: "Paste the GitHub Release page or source page where your ZIP file is published."
+      label: "GitHub Release URL"
+      description: "Paste the GitHub Release page where your Data Pack ZIP is uploaded."
       placeholder: "https://github.com/username/repository/releases/tag/v1.0.0"
     validations:
       required: true
 
-  - type: input
-    id: game_version
-    attributes:
-      label: "Game Version"
-      placeholder: "Example: 1.0"
-    validations:
-      required: true
-
-  - type: input
-    id: database_version
-    attributes:
-      label: "Database Version"
-      placeholder: "Example: 1.0"
-    validations:
-      required: true
-
   - type: checkboxes
-    id: submission_confirmation
+    id: confirmation
     attributes:
-      label: "Submission Confirmation"
-      description: "Please confirm all of the following before submitting."
+      label: "Confirmation"
+      description: "Please confirm the following."
       options:
-        - label: "I confirm that I am responsible for the content included in this Data Pack."
+        - label: "I am responsible for the content included in this Data Pack."
           required: true
-        - label: "I confirm that I have the necessary rights or permissions to distribute the content included in this Data Pack."
-          required: true
-        - label: "I confirm that this Data Pack does not contain executable code, malware or intentionally harmful files."
-          required: true
-        - label: "I understand that this Data Pack may be removed if it violates community rules or receives a valid copyright or trademark complaint."
-          required: true
-        - label: "I understand that submitting this Data Pack does not guarantee that it will be listed or featured."
+        - label: "I understand that this Data Pack may be removed if it violates the rules or receives a valid rights complaint."
           required: true
