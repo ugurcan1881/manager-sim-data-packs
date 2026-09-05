@@ -1,64 +1,177 @@
 # ⚽ Football Club Manager — Community Data Packs
 
-> Create, publish and share custom Data Packs for **Football Club Manager**.
+Create, customize and share community Data Packs for **Football Club Manager**.
+
+Data Packs allow players to replace supported default game data with custom names, images and other supported content without modifying the original game database.
 
 ---
 
-## 🚀 Quick Start
+# 🚀 Quick Start
 
-### 1) Download the Starter Pack
+## 1. Download the Full Starter Pack
 
-[⬇️ Download Players Starter Pack](https://github.com/ugurcan1881/manager-sim-data-packs/releases/download/starter-v1.0/ManagerSim-Players-Starter.zip)
+[⬇️ DOWNLOAD FULL STARTER PACK](https://github.com/ugurcan1881/manager-sim-data-packs/releases/download/starter-v1.0/Football.Club.Manager.Full-Starter-Pack.zip)
 
-The starter pack currently includes:
+The Full Starter Pack contains the files needed to create a Football Club Manager Data Pack.
+
+It includes supported data such as:
 
 - `manifest.json`
 - `players.csv`
+- `clubs.csv`
+- `competitions.csv`
+- `stadiums.csv`
+- `images/`
 
-More files may be added later for:
-
-- Clubs
-- Competitions
-- Stadiums
-- Logos
-- Other supported game data
+The starter files contain the IDs used by the game so you can easily identify and edit supported game data.
 
 ---
 
-## ✏️ Create Your Mod
+# ✏️ Creating Your Data Pack
 
-Open `players.csv` with Excel, LibreOffice Calc, Google Sheets or another CSV editor.
+Extract the Starter Pack ZIP to a folder.
 
-### Important
+You can edit CSV files using:
 
-- Edit the `name` column.
-- **Do not change `playerId`.**
-- `playerId` is the permanent ID used by the game.
-- Other columns are there to help you identify the correct player.
+- Microsoft Excel
+- LibreOffice Calc
+- Google Sheets
+- Any compatible CSV editor
+
+You only need to change the information you want to customize.
+
+---
+
+## 👤 Players
+
+Player data is stored in:
+
+`players.csv`
 
 Example:
 
-```csv
 playerId,name,position,nationality
 1524,John Smith,ST,Nigeria
-```
 
-Change only the name:
+You may change supported fields such as the player name.
 
-```csv
+Example:
+
 playerId,name,position,nationality
 1524,Victor Osimhen,ST,Nigeria
-```
 
-When finished, save the CSV.
+### Important
+
+Do **not** change:
+
+`playerId`
+
+The ID is used by the game to identify the correct player.
 
 ---
 
-## 📦 Create Your ZIP
+## 🏟️ Clubs
 
-Your ZIP should look like this:
+Club data is stored in:
 
-```text
+`clubs.csv`
+
+You can use this file to customize supported club information.
+
+### Important
+
+Do **not** change the club ID.
+
+The club ID connects your changes to the correct club inside the game.
+
+---
+
+## 🏆 Competitions
+
+Competition data is stored in:
+
+`competitions.csv`
+
+This may include supported leagues, cups and other competitions.
+
+You may change supported competition information while keeping the original competition ID unchanged.
+
+---
+
+## 🏟 Stadiums
+
+Stadium data is stored in:
+
+`stadiums.csv`
+
+You may customize supported stadium information.
+
+Do **not** change stadium IDs.
+
+---
+
+# 🖼️ Images and Logos
+
+Supported images can be placed inside:
+
+`images/`
+
+Depending on the supported Data Pack structure, images may be used for things such as:
+
+- Club logos
+- Competition logos
+- Player images
+- Stadium images
+- Other supported graphics
+
+Follow the file structure included in the Starter Pack.
+
+Do not change IDs or image references unless you know they are supported by the game.
+
+---
+
+# ⚠️ IDs Are Important
+
+Football Club Manager uses permanent IDs to connect Data Pack changes to the correct game data.
+
+Examples include:
+
+playerId
+clubId
+competitionId
+stadiumId
+
+### Never change these IDs.
+
+You should normally change only the editable values connected to those IDs.
+
+For example:
+
+ID = identifies the object
+Name = the value your Data Pack overrides
+
+Changing an ID may cause your Data Pack to modify the wrong object or fail to load correctly.
+
+---
+
+# 📄 manifest.json
+
+Every Data Pack must contain:
+
+`manifest.json`
+
+The manifest contains information used by Football Club Manager to identify and load the Data Pack.
+
+Keep the manifest inside the root of your ZIP.
+
+---
+
+# 📦 Creating Your Data Pack ZIP
+
+When you finish editing your Data Pack, create a ZIP file.
+
+Your ZIP should look similar to this:
+
 My-Data-Pack.zip
 ├── manifest.json
 ├── players.csv
@@ -66,144 +179,159 @@ My-Data-Pack.zip
 ├── competitions.csv
 ├── stadiums.csv
 └── images/
-```
 
-Not every file is required. Only include files supported by your Data Pack.
+You do not need to modify every file.
 
-> Important: Do not put everything inside an extra folder inside the ZIP.
-
-Correct:
-
-```text
-My-Data-Pack.zip
-├── manifest.json
-└── players.csv
-```
-
-Avoid:
-
-```text
-My-Data-Pack.zip
-└── My-Data-Pack/
-    ├── manifest.json
-    └── players.csv
-```
+Your Data Pack can contain only the supported files you actually use.
 
 ---
 
-# 🌐 Publish Your Data Pack
+## ✅ Correct ZIP Structure
 
-Never used GitHub before? Follow these four steps.
+My-Data-Pack.zip
+├── manifest.json
+├── players.csv
+└── clubs.csv
 
-### STEP 1 — Create a GitHub Account
+---
+
+## ❌ Incorrect ZIP Structure
+
+Do not place the Data Pack inside another folder inside the ZIP.
+
+Avoid:
+
+My-Data-Pack.zip
+└── My-Data-Pack/
+    ├── manifest.json
+    ├── players.csv
+    └── clubs.csv
+
+The Data Pack files should be directly inside the ZIP.
+
+---
+
+# 🌐 Publishing Your Data Pack
+
+Community Data Packs are hosted by their creators.
+
+GitHub Releases are recommended because they provide a public source page and downloadable ZIP file.
+
+If you have never used GitHub before, follow the steps below.
+
+---
+
+# STEP 1 — Create a GitHub Account
 
 Go to:
 
 https://github.com
 
-Create a free account.
+Create a free GitHub account.
 
 ---
 
-### STEP 2 — Create a Repository
+# STEP 2 — Create a Repository
 
 On GitHub:
 
-**+ → New repository**
++ → New repository
+
+Example repository name:
+
+football-club-manager-data-pack
+
+Example description:
+
+Unofficial community Data Pack for Football Club Manager.
 
 Recommended settings:
 
-**Repository name**
-```text
-football-club-manager-data-pack
-```
-
-**Description**
-```text
-Unofficial community Data Pack for Football Club Manager.
-```
-
-Select:
-
-- ✅ Public
-- ✅ Add a README file
+- Public
+- Add a README file
 
 Then press:
 
-**Create repository**
+Create repository
 
 ---
 
-### STEP 3 — Create a Release
+# STEP 3 — Create a Release
 
-Inside your repository:
+Inside your repository open:
 
-**Releases → Create a new release**
+Releases
 
-Example:
+Then select:
 
-**Tag**
-```text
+Create a new release
+
+Example tag:
+
 v1.0.0
-```
 
-**Release title**
-```text
+Example release title:
+
 2026/27 Data Pack v1.0.0
-```
 
-Then upload your Data Pack ZIP in the release assets section.
-
-Press:
-
-**Publish release**
-
----
-
-### STEP 4 — Submit Your Mod
-
-Copy the URL of your GitHub Release page.
+Upload your finished Data Pack ZIP to the Release assets section.
 
 Example:
 
-```text
+My-Football-Data-Pack-v1.0.0.zip
+
+Then press:
+
+Publish release
+
+---
+
+# STEP 4 — Submit Your Data Pack
+
+After publishing your Release, copy the URL of the Release page.
+
+Example:
+
 https://github.com/YourUsername/YourRepository/releases/tag/v1.0.0
-```
 
-Then submit it here:
+Then submit your Data Pack here:
 
-## [📤 SUBMIT YOUR DATA PACK](https://github.com/ugurcan1881/manager-sim-data-packs/issues/new?template=data-pack-submission.yml)
+https://github.com/ugurcan1881/manager-sim-data-packs/issues/new?template=data-pack-submission.yml
 
-You only need to enter:
+The submission form asks for:
 
 - Mod Name
 - Author
 - Description
 - GitHub Release URL
 
-That’s it.
+The Author field is the display name or nickname that will appear for your Data Pack.
 
-You do **not** need to calculate:
+It does not need to be identical to your GitHub username.
 
-- SHA-256
+---
+
+# 🤖 Automatic Processing
+
+You do not need to manually provide technical download information.
+
+The Football Club Manager Data Pack system can automatically collect and validate information from your GitHub Release, including:
+
+- Release version
+- ZIP download URL
 - File size
-- Direct ZIP URL
-- Download metadata
+- SHA-256
+- Other supported metadata
 
-Those details can be collected automatically from the GitHub Release.
+The submitted ZIP may also be checked for compatibility and unsafe file types before being added to the catalog.
 
 ---
 
 # 🔎 In-Game Data Mod Browser
 
-Approved Data Packs may appear in:
+Published community Data Packs may appear inside the Football Club Manager Data Mod Browser.
 
-```text
-DATA PACKS
-→ SEARCH FOR DATA MODS
-```
-
-Players can see:
+Players can browse available packs and view information such as:
 
 - Mod name
 - Author
@@ -225,25 +353,48 @@ Available actions may include:
 
 # ⭐ Featured Mods
 
-Some community Data Packs may appear under **Featured Mods**.
+Some community Data Packs may be highlighted under:
 
-Featured only means the Data Pack is highlighted for easier discovery.
+Featured Mods
 
-It does **not** mean Football Club Manager owns, licenses or created the third-party content inside that Data Pack.
+Featured status only means that the Data Pack has been highlighted for easier discovery.
+
+It does not mean Football Club Manager owns, created, licensed or officially endorses third-party content contained inside the Data Pack.
 
 ---
 
-# 🔄 Updating Your Mod
+# 🔄 Updating Your Data Pack
 
-When you release an update:
+When you create a new version of your Data Pack, use a new version number.
 
-```text
-v1.0.0 → v1.1.0
-```
+Example:
 
-Create a new GitHub Release and upload the new ZIP.
+v1.0.0
+↓
+v1.1.0
 
-Do not overwrite the old release file.
+Create a new GitHub Release for the update.
+
+Example:
+
+v1.1.0
+
+Upload the updated ZIP to that Release.
+
+Whenever possible, keep the version numbers consistent.
+
+Example:
+
+Tag:
+v1.1.0
+
+Release title:
+2026/27 Data Pack v1.1.0
+
+ZIP:
+2026-27-Data-Pack-v1.1.0.zip
+
+This makes updates easier to identify.
 
 ---
 
@@ -254,18 +405,21 @@ Data Packs must not contain:
 - Malware
 - Executable files
 - Harmful scripts
+- Malicious code
 - Intentionally misleading files
-- Attempts to bypass Data Pack security
+- Files designed to bypass Data Pack security
+- Content intended to damage the game or user's device
 
-Data Packs may be removed if they are:
+Data Packs may be removed from the community catalog if they are:
 
 - Malicious
 - Broken
 - Misleading
 - Abusive
 - Incompatible
-- Reported for a valid rights complaint
-- In violation of community rules
+- Impersonating another creator
+- Violating community rules
+- Subject to a valid copyright, trademark or other rights complaint
 
 ---
 
@@ -277,11 +431,11 @@ Each Data Pack author is responsible for the content they create, upload and dis
 
 Football Club Manager does not claim ownership of third-party names, trademarks, logos, images or other materials contained in independently created community Data Packs.
 
-Unless specifically stated otherwise, community Data Packs are **not official Football Club Manager content**.
+Unless specifically stated otherwise, community Data Packs are not official Football Club Manager content.
 
-Listing or featuring a Data Pack does not imply ownership, sponsorship, affiliation, licensing or endorsement of third-party content.
+Listing, displaying or featuring a Data Pack does not imply ownership, sponsorship, affiliation, licensing or endorsement of third-party content.
 
-Users choose whether to download and install community Data Packs.
+Players choose whether to download and install community Data Packs.
 
 ---
 
@@ -289,7 +443,7 @@ Users choose whether to download and install community Data Packs.
 
 Football Club Manager respects copyright, trademark and other rights holders.
 
-If you believe a listed Data Pack infringes your rights, please submit a report containing:
+If you believe a listed Data Pack infringes your rights, a report should include relevant information such as:
 
 - Data Pack name
 - Link to the affected Data Pack
@@ -302,9 +456,9 @@ A reported Data Pack may be reviewed, hidden or removed where appropriate.
 
 ---
 
-# 🚩 Report a Data Pack
+# 🚩 Reporting a Data Pack
 
-Report a Data Pack if it is:
+A Data Pack may be reported if it is:
 
 - Malicious
 - Broken
@@ -312,6 +466,7 @@ Report a Data Pack if it is:
 - Impersonating another creator
 - Violating community rules
 - Infringing copyright or trademark rights
+- Distributing content without the necessary rights or permissions
 
 ---
 
@@ -321,18 +476,36 @@ Football Club Manager includes its own default game data.
 
 Community Data Packs are optional override packages.
 
+Installing a Data Pack does not permanently replace the original game database.
+
 Selecting:
 
-```text
 NO DATA PACK
-```
 
 returns the game to its default data.
 
 ---
 
-## ❤️ Community
+# 🔗 Source Transparency
 
-Create your pack, publish it, submit it and share it with other Football Club Manager players.
+Community Data Packs remain hosted by their creators.
 
-**Have fun modding.**
+Football Club Manager may provide a link to the original GitHub Release or repository so players can view the source of the Data Pack.
+
+Data Pack authors remain responsible for maintaining their own hosted files and releases.
+
+---
+
+# ❤️ Community
+
+Create your Data Pack.
+
+Customize your football world.
+
+Publish it.
+
+Submit it.
+
+Share it with other Football Club Manager players.
+
+Have fun modding. ⚽
