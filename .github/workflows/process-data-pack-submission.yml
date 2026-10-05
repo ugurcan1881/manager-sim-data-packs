@@ -4,6 +4,14 @@ on:
   issues:
     types:
       - opened
+      - edited
+      - reopened
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: "Submission issue number to process again"
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -15,7 +23,7 @@ concurrency:
 
 jobs:
   validate-and-publish:
-    if: startsWith(github.event.issue.title, '[DATA PACK]')
+    if: github.event_name == 'workflow_dispatch' || (github.event.issue.state == 'open' && !github.event.issue.pull_request && contains(github.event.issue.body, '### Mod Name') && contains(github.event.issue.body, '### GitHub Release URL'))
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -43,7 +51,11 @@ jobs:
           git config user.name "Football Club Manager Bot"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add packs catalog.json
-          git commit -m "Add validated community Data Pack"
+          if git diff --cached --quiet; then
+            echo "Catalog is already up to date."
+            exit 0
+          fi
+          git commit -m "Add or update validated community Data Pack"
           git push
 
       - name: Comment on and close submission issue
