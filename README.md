@@ -10,7 +10,7 @@ Data Packs allow players to replace supported default game data with custom name
 
 ## 1. Download the Full Starter Pack
 
-[⬇️ DOWNLOAD FULL STARTER PACK](https://github.com/ugurcan1881/manager-sim-data-packs/releases/download/starter-v1.0/Football.Club.Manager.Full-Starter-Pack.zip)
+[⬇️ DOWNLOAD FULL STARTER PACK](https://github.com/ugurcan1881/manager-sim-data-packs/releases/download/starter-v1.0/Football.Club.Manager.Full.Starter.Pack.zip)
 
 The Full Starter Pack contains the files needed to create a Football Club Manager Data Pack.
 
