@@ -563,12 +563,31 @@ def existing_packs() -> list[dict]:
     return records
 
 
-def ensure_not_duplicate_release(records: list[dict], source_url: str) -> None:
-    release_key = release_key_from_url(source_url)
-    if release_key is None:
-        raise SubmissionError("The normalized GitHub Release URL is invalid.")
-    if any(release_key_from_url(record.get("sourceUrl")) == release_key for record in records):
-        raise SubmissionError("This GitHub repository and release tag are already present in the catalog.")
+def find_existing_pack(records: list[dict], source_url: str, submitter: str) -> dict | None:
+    key = release_key_from_url(source_url)
+    matches = [record for record in records if release_key_from_url(record.get("sourceUrl"))
+               and release_key_from_url(record.get("sourceUrl"))[:2] == key[:2]]
+    if len(matches) > 1:
+        raise SubmissionError("Multiple catalog packs use this repository; an administrator must select the update target.")
+    if not matches:
+        return None
+    record = matches[0]
+    authorized = {key[0], str(record.get("submittedBy") or "").casefold()}
+    if not submitter or submitter.casefold() not in authorized:
+        raise SubmissionError("Only the original submitter or release owner can update this Data Pack.")
+    return record
+
+
+def load_event_issue(event_path: Path) -> dict:
+    event = json.loads(event_path.read_text(encoding="utf-8"))
+    issue = event.get("issue")
+    if isinstance(issue, dict):
+        return issue
+    number = str((event.get("inputs") or {}).get("issue_number") or "")
+    if not number.isdigit() or int(number) <= 0:
+        raise SubmissionError("Select a valid submission issue number.")
+    repository = os.environ.get("GITHUB_REPOSITORY", "")
+    return api_request(issue_api_url(repository, int(number)), os.environ.get("GITHUB_TOKEN", ""))
 
 
 def unique_pack_id(name: str, owner: str, repository: str, tag: str, records: list[dict]) -> str:
@@ -588,6 +607,9 @@ def unique_pack_id(name: str, owner: str, repository: str, tag: str, records: li
 
 
 def version_from_release(release: dict, manifest: dict) -> str:
+    manifest_version = str(manifest.get("version") or "").strip()
+    if SAFE_VERSION_RE.fullmatch(manifest_version):
+        return manifest_version
     raw = str(release.get("tag_name") or "").strip()
     if raw[:1].casefold() == "v":
         raw = raw[1:]
@@ -642,16 +664,14 @@ def finalize(repository: str, issue_number: int, token: str, result_path: Path) 
 
 
 def process(event_path: Path, result_path: Path) -> None:
-    event = json.loads(event_path.read_text(encoding="utf-8"))
-    issue = event.get("issue") or {}
-    title = str(issue.get("title") or "")
-    issue_number = int(issue.get("number") or 0)
-    if not title.startswith("[DATA PACK]"):
-        raise SubmissionError("Only issues whose title starts with [DATA PACK] can be processed.")
+    issue = load_event_issue(event_path)
+    if issue.get("pull_request"):
+        raise SubmissionError("Pull requests are not Data Pack submissions.")
     form = parse_issue_form(str(issue.get("body") or ""))
     owner, release_repository, requested_tag, source_url = parse_release_url(form["release_url"])
     records = existing_packs()
-    ensure_not_duplicate_release(records, source_url)
+    submitter = str((issue.get("user") or {}).get("login") or "")
+    existing = find_existing_pack(records, source_url, submitter)
 
     release = get_public_release(owner, release_repository, requested_tag)
     actual_tag = str(release.get("tag_name") or "")
@@ -664,7 +684,7 @@ def process(event_path: Path, result_path: Path) -> None:
         sha256 = download_asset(asset, zip_path)
         manifest = validate_zip(zip_path)
 
-    pack_id = unique_pack_id(form["name"], owner, release_repository, actual_tag, records)
+    pack_id = existing["id"] if existing else unique_pack_id(form["name"], owner, release_repository, actual_tag, records)
     version = version_from_release(release, manifest)
     record = {
         "id": pack_id,
@@ -679,8 +699,19 @@ def process(event_path: Path, result_path: Path) -> None:
         "gameVersion": str(manifest.get("gameVersion") or ""),
         "minimumGameVersion": str(manifest.get("minimumGameVersion") or ""),
         "databaseVersion": str(manifest.get("databaseVersion") or ""),
-        "downloadCount": 0,
+        "downloadCount": int((existing or {}).get("downloadCount") or 0),
+        "submittedBy": submitter,
     }
+    if not is_safe_token(pack_id):
+        raise SubmissionError("The existing pack ID is unsafe.")
+    def numeric_version(value: str) -> tuple | None:
+        return tuple(map(int, value.split("."))) if re.fullmatch(r"\d+(?:\.\d+)*", value) else None
+    old_version = numeric_version(str((existing or {}).get("version") or ""))
+    new_version = numeric_version(version)
+    if old_version and new_version:
+        length = max(len(old_version), len(new_version))
+        if new_version + (0,) * (length - len(new_version)) < old_version + (0,) * (length - len(old_version)):
+            raise SubmissionError("An older package version cannot replace the catalog version.")
     Path("packs").mkdir(exist_ok=True)
     output_path = Path("packs") / f"{pack_id}.json"
     temporary_path = output_path.with_suffix(".json.tmp")
@@ -699,13 +730,11 @@ def main() -> int:
     result_path = Path(os.environ.get("SUBMISSION_RESULT_PATH", ".submission-result.json"))
     issue_number = 0
     if len(sys.argv) == 2 and sys.argv[1] == "--finalize":
-        event = json.loads(event_path.read_text(encoding="utf-8"))
-        issue_number = int((event.get("issue") or {}).get("number") or 0)
+        issue_number = int(load_event_issue(event_path).get("number") or 0)
         finalize(repository, issue_number, token, result_path)
         return 0
     try:
-        event = json.loads(event_path.read_text(encoding="utf-8"))
-        issue_number = int((event.get("issue") or {}).get("number") or 0)
+        issue_number = int(load_event_issue(event_path).get("number") or 0)
         process(event_path, result_path)
         return 0
     except SubmissionError as error:
